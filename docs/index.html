@@ -3,7 +3,7 @@
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
     <meta charset="utf-8">
 
-<title>ドリコムで使ってるgem一覧（仮） #railsdm</title>
+<title>ドリコムで使ってるgem一覧 #railsdm</title>
 
 <meta name="description" content="">
 <meta name="author" content="sue445">
@@ -47,7 +47,7 @@
   <div class="slides">
     <section>
 
-<h1>ドリコムで使ってるgem一覧（仮）</h1>
+<h1>ドリコムで使ってるgem一覧</h1>
 <p>sue445</p>
 
 <p>2017/06/22 <a href="https://rails-developers-meetup.connpass.com/event/58046/">Rails Developers Meetup #2</a></p>
@@ -59,7 +59,327 @@
 </h2>
 
 <ul>
-  <li><a href="https://twitter.com/sue445">sue445</a></li>
+  <li>Go Sueyoshi (a.k.a <a href="https://twitter.com/sue445">@sue445</a>)</li>
+  <li>
+<a href="http://www.drecom.co.jp/">株式会社ドリコム</a> 所属
+    <ul>
+      <li>2012年入社（今年6年目）</li>
+      <li>インフラストラクチャー部で社内gemを中心にアプリからインフラまでだいたいサーバサイドを浅く広く見てる</li>
+      <li><strong>ソシャゲのバックエンドチョットワカル</strong></li>
+    </ul>
+  </li>
+  <li>今まで作った主要なものは <a href="http://qiita.com/advent-calendar/2016/sue445">sue445 Advent Calendar 2016 - Qiita</a> を参照</li>
+  <li>
+<strong>プリキュアのカバレッジ100%</strong>
+    <ul>
+      <li>初代から現行までテレビと映画全部見てる</li>
+      <li>リアルタイムでの視聴は半分くらい</li>
+    </ul>
+  </li>
+</ul>
+
+</section>
+<section>
+
+<h3>今期の嫁：キュアカスタード</h3>
+<p><img src="images/cure_custard.jpg" alt="cure custard"></p>
+
+</section>
+<section>
+
+<h3>本気の嫁：キュアピース</h3>
+<p><img src="images/cure_engineer_peace.jpg" alt="cure peace"></p>
+
+</section>
+<section>
+
+<h2>今日話すこと</h2>
+<ul>
+  <li>たくさんのRailsアプリを運用してるドリコムでよく使われてるgemの紹介</li>
+</ul>
+
+</section>
+<section>
+
+<h2>アジェンダ</h2>
+<ul>
+  <li>ドリコムとRails</li>
+  <li>かぶりgem集計</li>
+  <li>ドリコムでよく使われてるけど他ではあまり使われてなさそうなgemを紹介</li>
+</ul>
+
+</section>
+<section>
+
+<h2>ドリコムとRails</h2>
+<ul>
+  <li>Railsは2006年くらいから利用 (当時Rails 1.0)</li>
+  <li>現在本番環境で動いてるアプリだけでも10個以上
+    <ul>
+      <li>ネイティブアプリのサーバサイドやwebサービスなど</li>
+    </ul>
+  </li>
+  <li>開発中のアプリ、クローズしたアプリ、社内アプリも含めたらもっとある</li>
+</ul>
+
+</section>
+<section>
+
+<h2>かぶりgem集計</h2>
+<ul>
+  <li>ここ数年でリリース or 現在開発中のアプリのアプリのGemfileを実際にparseして集計</li>
+</ul>
+
+</section>
+<section>
+
+<h3>集計スクリプト</h3>
+<p><a href="https://gist.github.com/sue445/538c7339ccfb35decdb3463511acf21e">https://gist.github.com/sue445/538c7339ccfb35decdb3463511acf21e</a></p>
+
+<pre><code class="language-ruby"># parse_gemfile.rb
+ARGV.each do |source_file|
+  File.read(source_file).each_line do |line|
+    match_data = line.match(/^\s*gem\s*+["'](.+?)["']/)
+    next unless match_data
+
+    gem_name = match_data[1]
+    next if EXCLUDE_GEMS.include?(gem_name)
+    puts gem_name
+  end
+end
+</code></pre>
+
+<pre><code class="language-bash">$ ruby parse_gemfile.rb *.gemfile | sort | uniq -c | sort -nr
+</code></pre>
+
+</section>
+<section>
+
+<h3>集計結果（抜粋）</h3>
+<ul>
+  <li>11アプリのGemfileを頑張って集計</li>
+  <li>
+<code>rails new</code> するとデフォで入ってるgemやOSSじゃない社内gem除く</li>
+  <li>メジャーどころが集まりすぎて面白みのない結果 <img class="emoji" alt=":sweat_smile:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f605.png">
+</li>
+</ul>
+
+<pre><code class="language-text">  11 sentry-raven
+  11 rspec-rails
+  11 komachi_heartbeat
+  11 factory_girl_rails
+  11 annotate
+  10 sidekiq
+  10 pry-byebug
+  10 jemalloc
+  10 global
+   9 sinatra
+   9 sidekiq-cron
+   9 redis-objects
+   9 pry-rails
+   9 newrelic_rpm
+   9 kaminari
+   8 onkcop
+   8 jquery-rails
+   8 capistrano
+   8 bullet
+   8 activerecord-import
+   7 timecop
+   7 redis-namespace
+   7 pry-doc
+   7 oj
+   7 guard-rspec
+   6 unicorn
+   6 quiet_assets
+   6 dalli
+   6 capistrano-bundler
+   6 better_errors
+   5 slim-rails
+   5 shibaraku
+   5 rubocop
+   5 rspec-parameterized
+   5 roo
+   5 pry-stack_explorer
+   5 newrelic-redis
+   5 aws-sdk
+   5 active_hash
+   4 weighted_sample
+   4 walker_method
+   4 simplecov-rcov
+   4 rspec-sidekiq
+   4 redis-rails
+   4 rails-erd
+   4 pry
+   4 pre-commit
+   4 oj_mimic_json
+   4 faraday
+   4 devise
+   4 chatwork
+   4 bootstrap-sass
+   4 barrage
+   4 activerecord-turntable
+   4 activerecord-simple_index_name
+   4 active_model_serializers
+</code></pre>
+
+</section>
+<section>
+
+<h2>ドリコムでよく使われてるけど他ではあまり使われてなさそうなgemを紹介</h2>
+<ul>
+  <li>komachi_heartbeat (11 apps)</li>
+  <li>global (10 apps)</li>
+  <li>onkcop (8 apps)</li>
+  <li>rspec-parameterized (5 apps)</li>
+  <li>shibaraku (5 apps)</li>
+  <li>activerecord-simple_index_name (4 apps)</li>
+  <li>activerecord-turntable (4 apps)</li>
+</ul>
+
+</section>
+<section>
+
+<h3>komachi_heartbeat (11 apps)</h3>
+<p><a href="https://github.com/mitaku/komachi_heartbeat">https://github.com/mitaku/komachi_heartbeat</a></p>
+
+<ul>
+  <li>Rails アプリケーションとDBサーバーなどの死活監視するためのURLを提供するEngine</li>
+  <li>
+<code>/MOUNT_PATH/heartbeat</code> にアクセスしたらDB, Redis, memcachedの接続をチェックして問題なければokを返す</li>
+  <li>弊社ではkomachi_heartbeatのエンドポイントをZabbixで監視して異常時にアラートメールを飛ばしてる</li>
+</ul>
+
+</section>
+<section>
+
+<h3>global (10 apps)</h3>
+<p><a href="https://github.com/railsware/global">https://github.com/railsware/global</a></p>
+
+<ul>
+  <li>yamlの設定ファイルをいい感じに扱うためのgem</li>
+  <li>普通にyaml書く場合と比べて痒いところに手が届いて、記述が少なくて済む</li>
+  <li>詳しくは <a href="http://sue445.hatenablog.com/entry/2015/03/29/012855">Railsアプリやgem作る時にいつも入れているgem一覧 - くりにっき</a> 参照</li>
+</ul>
+
+</section>
+<section>
+
+<h3>onkcop（オニクコップ） (8 apps)</h3>
+<p><a href="https://github.com/onk/onkcop">https://github.com/onk/onkcop</a></p>
+
+<ul>
+  <li>
+<a href="https://github.com/bbatsov/rubocop">rubocop</a> のデフォルトの設定を <a href="https://twitter.com/onk">@onk</a> がいい感じにカスタマイズしたgem</li>
+  <li>ドリコムの標準コーディング規約</li>
+  <li>onkが本家のリリースを全部読んで精査してからonkcopに取り込んでるので安心感がある</li>
+</ul>
+
+</section>
+<section>
+
+<h3>rspec-parameterized (5 apps)</h3>
+<p><a href="https://github.com/tomykaira/rspec-parameterized">https://github.com/tomykaira/rspec-parameterized</a></p>
+
+<ul>
+  <li>GroovyのSpockみたいなテーブル表記でパラメタライズドテストするgem</li>
+</ul>
+
+<pre><code class="language-ruby">describe "plus" do
+  using RSpec::Parameterized::TableSyntax
+
+  where(:a, :b, :answer) do
+    1 | 2 | 3
+    5 | 8 | 13
+    0 | 0 | 0
+  end
+
+  with_them do
+    it "should do additions" do
+      expect(a + b).to eq answer
+    end
+  end
+end
+</code></pre>
+
+</section>
+<section>
+
+<h3>shibaraku (5 apps)</h3>
+<p><a href="https://github.com/onk/shibaraku">https://github.com/onk/shibaraku</a></p>
+
+<ul>
+  <li>ActiveRecord で start_at/end_at がある model を扱う gem</li>
+  <li>よくある使い方だと、イベントの時限公開とか</li>
+</ul>
+
+<pre><code class="language-ruby">Campaign.in_time
+# =&gt; SELECT start_at &lt;= now &lt; end_at records
+
+Campaign.in_time(super_user)
+# =&gt; SELECT test_start_at &lt;= now &lt; test_end_at records
+</code></pre>
+
+</section>
+<section>
+
+<h3>activerecord-simple_index_name (4 apps)</h3>
+<p><a href="https://github.com/sue445/activerecord-simple_index_name">https://github.com/sue445/activerecord-simple_index_name</a></p>
+
+<ul>
+  <li>Railsで生成されるインデックス名からtable名を抜いて短くするためのgem</li>
+  <li>下記の例だと <code>index_user_stocks_on_user_id_and_article_id</code> (43文字) -&gt; <code>user_id_and_article_id</code> (22文字)</li>
+</ul>
+
+<pre><code class="language-ruby">create_table :user_stocks do |t|
+  t.integer :user_id,    null: false
+  t.integer :article_id, null: false
+  t.timestamps null: false
+end
+
+add_index :user_stocks, [:user_id, :article_id]
+</code></pre>
+
+</section>
+<section>
+
+<h3>activerecord-turntable (4 apps)</h3>
+<p><a href="https://github.com/drecom/activerecord-turntable">https://github.com/drecom/activerecord-turntable</a></p>
+
+<ul>
+  <li>RailsでDBを水平分散するためのgem
+    <ul>
+      <li>ユーザIDごとにアクセスするDBを変える</li>
+    </ul>
+  </li>
+  <li>DAU（Daily Active User）ウン十万を想定してるアプリではリリース時からだいたい入れてる</li>
+  <li>
+<a href="https://github.com/thiagopradi/octopus">octopus</a> と違って、アプリケーションコードにturntable特有の記述が無い
+    <ul>
+      <li>普通にコードを書けばturntableが勝手に水平分散してくれるので、アプリ側でDBが水平分散されてることを全く意識することがない</li>
+    </ul>
+  </li>
+  <li>詳しい資料 <a href="https://speakerdeck.com/gussan/sosiyarugemudedbshui-ping-fen-san-number-mdb-casual">https://speakerdeck.com/gussan/sosiyarugemudedbshui-ping-fen-san-number-mdb-casual</a></li>
+</ul>
+
+</section>
+<section>
+
+<h2>WE’RE HIRING !!</h2>
+<p>メンバー積極採用中です。<br>
+社員・契約社員・個人事業主・アルバイト etc..<br>
+<a href="http://www.drecom.co.jp/recruit/">http://www.drecom.co.jp/recruit/</a></p>
+
+<h3>募集職種</h3>
+<ul>
+  <li>エンジニア
+    <ul>
+      <li>Web/アプリ/フロントエンド</li>
+      <li>基盤・インフラ</li>
+    </ul>
+  </li>
+  <li>デザイナー</li>
+  <li>ディレクター/プランナー</li>
+  <li>データサイエンティスト and more !!</li>
 </ul>
 
 </section>

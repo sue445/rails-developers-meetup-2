@@ -1,3 +1,19 @@
-title: "ドリコムで使ってるgem一覧（仮） #railsdm"
+title: "ドリコムで使ってるgem一覧 #railsdm"
 author: "sue445"
 #theme: "sky"
+
+meta_properties:
+  og:locale: "ja_JP"
+  og:type: "website"
+  og:title: "ドリコムで使ってるgem一覧 #railsdm"
+  og:description: "Rails Developers Meetup #2 の発表資料です"
+  og:url: "https://sue445.github.io/rails-developers-meetup-2/#/"
+  og:image: "https://sue445.github.io/rails-developers-meetup-2/images/cure_custard.jpg"
+
+meta_names:
+  twitter:card: "Summary"
+  twitter:site: "@sue445"
+  twitter:creator: "@sue445"
+  twitter:title: "ドリコムで使ってるgem一覧 #railsdm"
+  twitter:description: "Rails Developers Meetup #2 の発表資料です"
+  twitter:image: "https://sue445.github.io/rails-developers-meetup-2/images/cure_custard.jpg"

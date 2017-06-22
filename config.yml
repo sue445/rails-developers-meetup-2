@@ -8,7 +8,7 @@ meta_properties:
   og:title: "ドリコムで使ってるgem一覧 #railsdm"
   og:description: "Rails Developers Meetup #2 の発表資料です"
   og:url: "https://sue445.github.io/rails-developers-meetup-2/#/"
-  og:image: "https://sue445.github.io/rails-developers-meetup-2/images/cure_custard.jpg"
+  og:image: "https://sue445.github.io/rails-developers-meetup-2/images/cover.png"
 
 meta_names:
   twitter:card: "Summary"
@@ -16,4 +16,4 @@ meta_names:
   twitter:creator: "@sue445"
   twitter:title: "ドリコムで使ってるgem一覧 #railsdm"
   twitter:description: "Rails Developers Meetup #2 の発表資料です"
-  twitter:image: "https://sue445.github.io/rails-developers-meetup-2/images/cure_custard.jpg"
+  twitter:image: "https://sue445.github.io/rails-developers-meetup-2/images/cover.png"
